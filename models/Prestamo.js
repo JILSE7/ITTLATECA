@@ -3,10 +3,6 @@ const {Schema, model} = require('mongoose');
 
 
 const prestamoSchema = Schema({
-    libro: {
-        type: Schema.Types.ObjectId,
-        ref: 'Libro'
-    },
     user: {
         type: Schema.Types.ObjectId,
         ref: 'Usuario',
@@ -17,17 +13,17 @@ const prestamoSchema = Schema({
         ref: 'Usuario',
         // required: true
     },
-    id_libro: {
+    libro: {
         type: Schema.Types.ObjectId,
         ref: 'Libro',
         // required: true
     },
     fechaRetiro: {
-        type: Date,
+        type: String,
         required: true
     },
     fechaDevolucion: {
-        type: Date,
+        type: String,
         required: true
     },
     devolucion: {

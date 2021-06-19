@@ -32,7 +32,7 @@ const usuarioSchema = Schema({
     carrera: {
         type: String,
         required: true,
-        enum: ['INDUSTRIAL', 'ELECTRICA', 'ELECTROMECANICA', 'ADMINISTRACION', 'TICS', 'MECANICA', 'MECATRONICA', 'DOCENTE', 'OTRO']
+        enum: ['INDUSTRIAL', 'ELECTRICA', 'ELECTROMECANICA', 'GE', 'TICS', 'MECANICA', 'MECATRONICA', 'DOCENTE', 'OTRO']
     },
     type: {
         type: String,
@@ -44,7 +44,7 @@ const usuarioSchema = Schema({
         required:true
     },
     prestamos:{
-        type: Schema.Types.ObjectId,
+        type: [Schema.Types.ObjectId],
         ref: 'Prestamo'
     }
 })

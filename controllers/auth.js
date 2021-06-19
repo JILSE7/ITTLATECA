@@ -21,7 +21,7 @@ const getUsers = async(req, res = response) =>{
      };
 
     try {
-        const users = await Usuario.find();
+        const users = await Usuario.find().populate('prestamos', "fechaRetiro fechaDevolucion devolucion");
         res.status(200).json({
             ok: true,
             users

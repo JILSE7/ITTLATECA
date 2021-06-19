@@ -27,14 +27,18 @@ const libroSchema = Schema({
        type: String,
        required: true
    },
+   disponibles: {
+        type: String,
+        required: true
+   },
    ubicacion: {
        type: String,
        required: true
-   }
-//    users:{//si existe algun libro prestado, mostrara quien lo tiene
-//         type: [Schema.Types.ObjectId],
-//         ref: 'Usuario'
-//    }
+   },
+    prestamos:{//si existe algun libro prestado, mostrara quien lo tiene
+       type: [Schema.Types.ObjectId],
+       ref: 'Prestamo'
+     }
 
 });
 //Editandop el schema

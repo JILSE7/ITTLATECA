@@ -1,10 +1,13 @@
+const moment = require('moment');
+//Express
 const express = require('express');
+//DB CONEXION
 const { dbConexion } = require('./database/config');
+//Habilitacion de CORS
 const cors = require('cors');
 
 //variables de entorno
 require('dotenv').config();
-
 
 //crear el sevidor de express
 const app = express();

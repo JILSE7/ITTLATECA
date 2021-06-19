@@ -7,10 +7,17 @@ const isDate = (value) =>{
     console.log(fecha);
     //Evalua si la fecha es valida
     if(fecha.isValid()){
-        return true
+        return true;
+
     }else{
         return false
     }
 }
+
+
+//const fecha = new Date();
+//console.log(fecha.setDate(fecha.getDate() + 2));
+//console.log(moment(1624220242169).format('LL'));
+
 
 module.exports = {isDate}

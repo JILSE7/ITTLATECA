@@ -31,13 +31,11 @@ router.get('/', getPrestamos);
 router.get('/:id', getPrestamoById);
 
 router.post('/', [
-    // check('user', 'El solicitante no puede ir vacio').notEmpty(),
-    // check('userAdmin', 'El administrador no puede ir vacio').notEmpty(),
-    // check('libro no puede ir vacio').notEmpty(),
+    check('user', 'El solicitante no puede ir vacio').notEmpty(),
+    check('userAdmin', 'El administrador no puede ir vacio').notEmpty(),
+    check('libro','libro no puede ir vacio').notEmpty(),
     check('fechaRetiro', 'La fecha de retiro es obligatoria').notEmpty(),
-    check('fechaRetiro', 'La fecha de retiro es obligatoria').custom(isDate),
     check('fechaDevolucion', 'La fecha de devolucion no puede ir vacia').notEmpty(),
-    check('fechaDevolucion', 'La fecha de devolucion no puede ir vacia').custom(isDate),
     check('devolucion', 'Boleano Devolucion').notEmpty(),
     validarCampos
 ], addPrestamo);
