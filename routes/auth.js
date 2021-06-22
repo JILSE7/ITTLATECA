@@ -15,6 +15,8 @@ deleteUser
  const {validarCampos} = require('../middlewares/validarCampos');
  //ValidarJWT
  const {validarjwt} = require('../middlewares/validar-jwt');
+ 
+// RUTA A TABLA USUARIOS /ITTLATECA/auth/lo que necesites hacer
 
  //Obtener Usuarios
  router.get('/users', validarjwt ,getUsers);
