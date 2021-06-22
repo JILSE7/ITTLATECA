@@ -16,7 +16,7 @@ deleteUser
  //ValidarJWT
  const {validarjwt} = require('../middlewares/validar-jwt');
  
-// RUTA A TABLA USUARIOS /ITTLATECA/auth/users
+// RUTA A TABLA USUARIOS /ITTLATECA/auth/lo que necesites hacer
 
  //Obtener Usuarios
  router.get('/users', validarjwt ,getUsers);
