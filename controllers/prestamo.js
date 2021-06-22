@@ -50,6 +50,16 @@ const addPrestamo = async(req, res = response) =>{
 
         const {user, libro: libroId}  = req.body; //Extrayendo usuario y libro de la peticion
         
+        //EXtrayendo los prestamos del usuario
+        const {prestamos: prestamosUsuario, activo} = await Usuario.findById(user).select('prestamos activo')
+        //Si el usuario no esta activo en la biblioteca se termina la peticion
+        if(!activo){
+            return res.status(403).json({
+                    ok:false,
+                    msg: 'El usuario no esta activo en la biblioteca'
+            })
+        }
+        
         //Verificando que no se dupliquen los prestamos
         const prestamoV = await Prestamo.find({"user": user, "libro" :libroId, "devolucion": false});
         console.log(prestamoV);
@@ -63,8 +73,6 @@ const addPrestamo = async(req, res = response) =>{
 
         //Extrayendo las existencias del libro
         const libroB = await Libro.findById(libroId);
-        //EXtrayendo los prestamos del usuario
-        const {prestamos: prestamosUsuario} = await Usuario.findById(user).select('prestamos')
         
         if(!libroB){
             return res.status(404).json({
@@ -83,16 +91,21 @@ const addPrestamo = async(req, res = response) =>{
         //Nueva instancia del prestamo
         const prestamo = new Prestamo(req.body);
 
-        //prestamo.userAdmin = req.uid;
+        
         //Grabando el prestamo en la bd
         const nuevoPrestamo = await prestamo.save();
+
         //actualizando los libros disponibles del libro
-        await Libro.findByIdAndUpdate(libroId,{"disponibles": String(Number(libroB.disponibles) - 1)},{useFindAndModify:true})
+        await Libro.findByIdAndUpdate(libroId,{"disponibles": String(Number(libroB.disponibles) - 1), "prestamos" : [...libroB.prestamos, nuevoPrestamo._id] },{useFindAndModify:false})
         await Usuario.findByIdAndUpdate(user, {prestamos: [...prestamosUsuario, nuevoPrestamo._id]})
+
+        //agregando el prestamo al libro
+        
+
         res.status(201).json({
             ok: true,
             prestamo: nuevoPrestamo
-        }) 
+        })  
         
     } catch (error) {
         console.log(error);
@@ -145,14 +158,14 @@ const updatePrestamo = async(req, res = response) =>{
                 const {disponibles, existencias} = libro;
                 
                 
-                if(disponibles == 0 || disponibles >= existencias){ //Si ya no hay mas
+                if( disponibles >= existencias){ //Si ya no hay mas
                     return res.status(404).json({
                         ok: false,
                         msg: "Ya no puedes realizar mas devoluciones, porque ya no tienes mas existencias de este titulo"
                     })
                 }
                 //Devolviendo libro
-                await Libro.findByIdAndUpdate(prestamo.libro,{ "disponibles": String(Number(disponibles) + 1)});
+                await Libro.findByIdAndUpdate(prestamo.libro,{ "disponibles": String(Number(disponibles) + 1),  "prestamos" : libro.prestamos.filter(prestamo => prestamo  != prestamoId )});
                 
             //Quitando el prestamo al usuario
             const newPrestamosUsuario = prestamosUsuario.filter(prestamo => prestamo != prestamoId);
